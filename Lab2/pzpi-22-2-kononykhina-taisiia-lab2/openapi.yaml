@@ -1,0 +1,304 @@
+info:
+  description: API для роботи з продуктами
+  title: Product API
+  version: 1.0.0
+openapi: 3.0.0
+paths:
+  /api/product/add-product:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                pCategory:
+                  type: string
+                pDescription:
+                  type: string
+                pName:
+                  type: string
+                pOffer:
+                  type: string
+                pPrice:
+                  type: number
+                pQuantity:
+                  type: integer
+                pStatus:
+                  type: string
+              required:
+              - pName
+              - pPrice
+              - pQuantity
+              - pCategory
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Продукт додано
+      summary: Додати новий продукт
+      tags:
+      - Products
+  /api/product/add-review:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                pId:
+                  type: string
+                rating:
+                  type: number
+                review:
+                  type: string
+                uId:
+                  type: string
+              required:
+              - pId
+              - uId
+              - rating
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Відгук додано
+      summary: Додати відгук
+      tags:
+      - Products
+  /api/product/cart-product:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                productArray:
+                  items:
+                    type: string
+                  type: array
+              required:
+              - productArray
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Товари в кошику
+      summary: Отримати товари в кошику
+      tags:
+      - Products
+  /api/product/delete-product:
+    get:
+      parameters:
+      - in: query
+        name: pId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Продукт видалено
+      summary: Видалити продукт
+      tags:
+      - Products
+  /api/product/delete-review:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                pId:
+                  type: string
+                rId:
+                  type: string
+              required:
+              - rId
+              - pId
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Відгук видалено
+      summary: Видалити відгук
+      tags:
+      - Products
+  /api/product/edit-product:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                pCategory:
+                  type: string
+                pDescription:
+                  type: string
+                pId:
+                  type: string
+                pImages:
+                  items:
+                    type: string
+                  type: array
+                pName:
+                  type: string
+                pOffer:
+                  type: string
+                pPrice:
+                  type: number
+                pQuantity:
+                  type: integer
+                pStatus:
+                  type: string
+              required:
+              - pId
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Продукт оновлено
+      summary: Редагувати продукт
+      tags:
+      - Products
+  /api/product/product-by-category:
+    get:
+      parameters:
+      - in: query
+        name: catId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Список продуктів
+      summary: Отримати продукти за категорією
+      tags:
+      - Products
+  /api/product/product-by-price:
+    get:
+      parameters:
+      - in: query
+        name: price
+        required: true
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Список продуктів
+      summary: Отримати продукти за ціною
+      tags:
+      - Products
+  /api/product/single-product:
+    get:
+      parameters:
+      - in: query
+        name: pId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Дані продукту
+      summary: Отримати продукт за ID
+      tags:
+      - Products
+  /api/product/all-product:
+    get:
+      summary: Отримати всі продукти
+      tags:
+        - Products
+      responses:
+        '200':
+          description: Успішна відповідь
+          content:
+            application/json:
+              schema:
+                type: array
+        '500':
+          description: Внутрішня помилка сервера
+  /api/product/wish-product:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                productArray:
+                  items:
+                    type: string
+                  type: array
+              required:
+              - productArray
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Список улюбленого
+      summary: Отримати список улюблених продуктів
+      tags:
+      - Products
+servers:
+- description: Локальний сервер
+  url: http://localhost:8000
+
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "67db07d60cdd5e2458c6c996"
+        pName:
+          type: string
+          example: "Camera"
+        pDescription:
+          type: string
+          example: "Equipment for photo studio."
+        pPrice:
+          type: number
+          example: 500
+        pOffer:
+          type: string
+          example: "33"
+        pQuantity:
+          type: integer
+          example: 750
+        pSold:
+          type: integer
+          example: 0
+        pImages:
+          type: array
+          items:
+            type: string
+          example:
+            - "1742407638027_2048x1364.jpg"
+            - "1742407638032_ecommerce-photography-setup.jpg"
+        pCategory:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: "67db067b0cdd5e2458c6c98c"
+            cName:
+              type: string
+              example: "Photo"
+        pStatus:
+          type: string
+          example: "Active"
+        pRatingsReviews:
+          type: array
+          items:
+            type: object
+          example: []
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-03-19T18:07:18.038Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-03-19T18:07:18.038Z"
+        __v:
+          type: integer
+          example: 0
